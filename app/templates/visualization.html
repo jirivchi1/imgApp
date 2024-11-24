@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualización de Imágenes</title>
+</head>
+<body>
+    <h1>Imágenes Generadas</h1>
+    {% for image in images %}
+        <div>
+            <p>Usuario: {{ image.username }}</p>
+            <p>Prompt: {{ image.prompt }}</p>
+            <p>Estado: {{ image.status }}</p>
+            {% if image.status == 'completed' %}
+                <img src="{{ url_for('static', filename='images/' + image.image_filename) }}" alt="Imagen Generada" width="400">
+            {% endif %}
+        </div>
+        <hr>
+    {% endfor %}
+</body>
+</html>
