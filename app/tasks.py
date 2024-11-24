@@ -17,8 +17,8 @@ def generate_image_task(prompt, username):
 
     # Conectar a MongoDB
     mongo_client = MongoClient(mongodb_uri)
-    db = mongo_client["dirty"]
-    user_prompts = db["test"]
+    db = mongo_client["image_generation"]
+    user_prompts = db["prompts"]
 
     # Configurar el cliente de OpenAI
     client = OpenAI(api_key=openai_api_key)
