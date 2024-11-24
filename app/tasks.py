@@ -1,12 +1,10 @@
-from . import celery
+from .celery_app import celery
+from flask import current_app
 from datetime import datetime
 import os
 import requests
-import random
-import string
 from pymongo import MongoClient
 from openai import OpenAI
-from flask import current_app
 
 
 @celery.task()
@@ -44,14 +42,10 @@ def generate_image_task(prompt, username):
     with open(image_path, "wb") as file:
         file.write(image_data)
 
-    # Guardar en MongoDB
-    document = {
-        "username": username,
-        "prompt": prompt,
-        "image_filename": image_filename,
-        "timestamp": datetime.now(),
-        "status": "completed",
-    }
-    user_prompts.insert_one(document)
+    # Actualizar el documento en MongoDB
+    user_prompts.update_one(
+        {"username": username, "prompt": prompt},
+        {"$set": {"image_filename": image_filename, "status": "completed"}},
+    )
 
     return image_filename
